@@ -1,0 +1,22 @@
+version: '3.8'
+x-common-variables: &common-variables
+MONGODB_DATABASE: covid
+  MONGODB_USER: admin
+  MONGODB_PASSWORD: admin123
+
+services:
+  mongodb: 
+      image: mongodb
+    restart: always
+    cap_add:
+      - SYS_NICE
+    volumes:
+      - "./setup.sql:/docker-entrypoint-initdb.d/setup.sql"
+    ports:
+      - "5000:5000"
+    environment:
+      <<: *common-variables
+      MONGODB_ROOT_PASSWORD: MONGODB_ROOT_PASSWORD
+      MONGODB_HOST: localhost
+  nginx:
+  frontend:
